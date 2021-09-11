@@ -1,0 +1,730 @@
+---
+swagger: "2.0"
+info:
+  description: API
+  version: 1.0.0
+  title: API
+host: virtserver.swaggerhub.com
+basePath: /Dev597/taskboard/1.0.0
+tags:
+- name: API
+  description: API
+schemes:
+- https
+paths:
+  /api/token-auth/:
+    post:
+      summary: Генерирует JWT токен
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Логин и Пароль пользователя
+        required: true
+        schema:
+          $ref: '#/definitions/JWT'
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: '#/definitions/JWT_200'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/JWT_400'
+  /api/token-refresh/:
+    post:
+      summary: Обновляет JWT токен
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: JWT токен
+        required: true
+        schema:
+          $ref: '#/definitions/JWT_refresh'
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: '#/definitions/JWT_200_refresh'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/JWT_400_refresh'
+  /api/auth/activateUser/{user}:
+    get:
+      summary: Активирует аккаунт
+      produces:
+      - application/json
+      parameters:
+      - name: user
+        in: path
+        description: Encoded username
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: '#/definitions/OK'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+  /api/entity/:
+    get:
+      summary: Возвращает список всех Entity
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        "200":
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Entity'
+        "400":
+          description: Bad request
+    post:
+      summary: Добавляет новое Entity
+      parameters:
+        - in: body
+          name: Entity
+          schema:
+            $ref: '#/definitions/Entity'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Entity'
+        "400":
+          description: Bad request
+  /api/entity/{id}/:
+    get:
+      summary: Возвращает Entity по ID
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: Entity id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: '#/definitions/Entity'
+        "400":
+          description: Bad request
+    delete:
+      summary: Удаляет Entity
+      parameters:
+      - name: id
+        in: path
+        description: Entity id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+    patch:
+      summary: Вносит изменения в BIO
+      parameters:
+      - name: id
+        in: path
+        description: Entity id
+        required: true
+        type: string
+      - in: body
+        name: Entity
+        schema:
+          $ref: '#/definitions/Entity'
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: '#/definitions/Entity'
+        "400":
+          description: Bad request
+  /api/bio/:
+    get:
+      summary: Возвращает список всех BIO
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        "200":
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BIO'
+        "400":
+          description: Bad request
+    post:
+      summary: Добавляет новое BIO
+      parameters:
+        - in: body
+          name: BIO
+          schema:
+            $ref: '#/definitions/Entity'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/BIO'
+        "400":
+          description: Bad request
+  /api/bio/{id}/:
+    get:
+      summary: Возвращает BIO по ID
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: BIO id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: '#/definitions/BIO'
+        "400":
+          description: Bad request
+    put:
+      summary: Вносит изменения в BIO
+      parameters:
+      - name: id
+        in: path
+        description: BIO id
+        required: true
+        type: string
+      - in: body
+        name: BIO
+        schema:
+          $ref: '#/definitions/Entity'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/BIO'
+        "400":
+          description: Bad request
+    delete:
+      summary: Удаляет BIO
+      parameters:
+      - name: id
+        in: path
+        description: BIO id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+  /api/passport/:
+    get:
+      summary: Возвращает список всех Passports
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        "200":
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Passport'
+        "400":
+          description: Bad request
+    post:
+      summary: Добавляет новый Passport
+      parameters:
+      - in: body
+        name: Passport
+        schema:
+          $ref: '#/definitions/Passport'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/Passport"
+        "400":
+          description: Bad request
+  /api/passport/{id}/:
+    get:
+      summary: Возвращает Passport по ID
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: Passport id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: "#/definitions/Passport"
+        "400":
+          description: Bad request
+    put:
+      summary: Вносит изменения в Passport
+      parameters:
+      - name: id
+        in: path
+        description: Passport id
+        required: true
+        type: string
+      - in: body
+        name: Passport
+        schema:
+          $ref: '#/definitions/Passport'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/Passport"
+        "400":
+          description: Bad request
+    delete:
+      summary: Удаляет BIO
+      parameters:
+      - name: id
+        in: path
+        description: Passport id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+  /api/comments/:
+    get:
+      summary: Возвращает список всех EnityComments
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        "200":
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Entity'
+        "400":
+          description: Bad request
+    post:
+      summary: Добавляет новый EnityComment
+      parameters:
+      - in: body
+        name: Comments
+        schema:
+          $ref: '#/definitions/Entity'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+  /api/comments/{id}/:
+    get:
+      summary: Возвращает Comment по ID
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: EnityComments id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: "#/definitions/Entity"
+        "400":
+          description: Bad request
+    put:
+      summary: Вносит изменения в Comment
+      parameters:
+      - name: id
+        in: path
+        description: EntityComments id
+        required: true
+        type: string
+      - in: body
+        name: Comment
+        schema:
+          $ref: '#/definitions/Entity'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/Entity"
+        "400":
+          description: Bad request
+    delete:
+      summary: Удаляет BIO
+      parameters:
+      - name: id
+        in: path
+        description: EntityComments id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+  /api/L3/:
+    get:
+      summary: 'Возвращает список всех ответов от L3 '
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        "200":
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/L3"
+        "400":
+          description: Bad request
+    post:
+      summary: Добавляет новый EnityCommentL3
+      parameters:
+      - in: body
+        name: Comment
+        schema:
+          $ref: '#/definitions/L3'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/L3"
+        "400":
+          description: Bad request
+  /api/L3/{id}/:
+    get:
+      summary: Возвращает L3Comment по ID
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: L3Comment id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Ok
+          schema:
+            $ref: "#/definitions/L3"
+        "400":
+          description: Bad request
+    put:
+      summary: Вносит изменения в L3Comment
+      parameters:
+      - name: id
+        in: path
+        description: L3Comment id
+        required: true
+        type: string
+      - in: body
+        name: Comment
+        schema:
+          $ref: '#/definitions/L3'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/L3"
+        "400":
+          description: Bad request
+    delete:
+      summary: Удаляет L3Comment
+      parameters:
+      - name: id
+        in: path
+        description: L3Comment id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+  /api/changeStatus/{id}/:
+    post:
+      summary: Меняет статус у Entity
+      parameters:
+      - name: id
+        in: path
+        description: Entity id
+        required: true
+        type: string
+      - in: body
+        name: status
+        description: Новый статус Entity
+        required: true
+        schema:
+          $ref: '#/definitions/ChangeStatus'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Wrong status
+        "404":
+          description: Entity not found
+  /api/entities/status/{status}/:
+    post:
+      summary: В зависимости от роли выводит список Entity с указанным статусом
+      parameters:
+      - name: status
+        in: path
+        description: Entity status
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/Entity"
+
+definitions:
+  Entity:
+    type: object
+    properties:
+      id:
+        type: integer
+      status:
+        type: integer
+      person:
+        $ref: '#/definitions/BIO'
+      passports:
+        type: array
+        items:
+          $ref: '#/definitions/Passport'
+      category:
+        type: integer
+      keywords:
+        type: array
+        items:
+          type: integer
+      countries:
+        type: array
+        items:
+          type: integer
+      ssn:
+        type: string
+      io:
+        type: string
+      external_sources:
+        type: array
+        items:
+          type: string
+      age_date:
+        type: string
+      entered:
+        type: string
+        example: "2020-11-20T00:00:00Z"
+      editor:
+        type: integer
+        example: 1
+      updated:
+        type: string
+        example: "2020-11-20T00:00:00Z"
+      locations:
+        type: array
+        items:
+          type: string
+          example: Tashkent
+      further_information:
+        type: object
+        properties:
+          bio:
+            type: string
+          info:
+            type: string
+          desc:
+            type: string
+          other:
+            type: array
+            items:
+              type: string  
+       
+  BIO:
+    type: object
+    properties: 
+      id:
+        type: integer
+      first_name:
+        type: string
+      last_name:
+        type: string
+      place_of_birth:
+        type: string
+      birth_date:
+        type: string
+        example: "2020-11-04"
+      deceased_date:
+        type: string
+        example: "2020-11-04"
+      aliases:
+        type: array
+        items:
+          type: string
+      low_quality_aliases:
+        type: array
+        items:
+          type: string
+      alternative_spelling:
+        type: array
+        items:
+          type: string
+      ei:
+        type: integer
+      status:
+        type: integer
+
+  Passport:
+    type: object
+    properties: 
+      id:
+        type: integer
+      pass_code:
+        type: string
+      citizenship:
+        type: string
+      entity:
+        type: integer
+      person:
+        type: integer
+      country:
+        type: integer
+
+  L3:
+    type: object
+    properties: 
+      id:
+        type: integer
+      comment:
+        type: string
+      entity:
+        type: integer
+
+  ChangeStatus:
+    type: object
+    properties:
+      status:
+        type: integer
+        example: 3
+  Check:
+    type: object
+    properties:
+      email:
+        type: string
+        example: devu.build@gmail.ru
+      status:
+        type: string
+        example: L1
+  JWT:
+    type: object
+    properties:
+      username:
+        type: string
+        example: username
+      password:
+        type: string
+        example: password
+  JWT_refresh:
+    type: object
+    properties:
+      refresh:
+        type: string
+        example: refresh_token
+  JWT_200:
+    type: object
+    properties:
+      access:
+        type: string
+        example: token
+      refresh:
+        type: string
+        example: refresh_token
+  JWT_200_refresh:
+    type: object
+    properties:
+      access:
+        type: string
+        example: token
+  JWT_400:
+    type: object
+    properties:
+      details:
+        type: string
+        example: 'No active account found with the given credentials'
+  JWT_400_refresh:
+    type: object
+    properties:
+      detail:
+        type: string
+        example: 'Token is invalid or expired'
+      code:
+        type: string
+        example: "token_not_valid"
+  Bad-request:
+    type: object
+    properties:
+      email:
+        type: string
+        example: '[error_text]'
+  Unauthorized:
+    type: object
+    properties:
+      detail:
+        type: string
+        example: Учетные данные не были предоставлены.
+  OK:
+    type: object
+    properties:
+      status:
+        type: string
+        example: Аккаунт активирован
+      username:
+        type: string
+        example: username
+      password:
+        type: string
+        example: password
+  Error:
+    type: object
+    properties:
+      error:
+        type: string
+        example: Incorrect link
+  Model:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64

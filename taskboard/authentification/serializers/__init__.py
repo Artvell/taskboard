@@ -1,0 +1,1 @@
+from authentification.serializers.UserSerializer import UserSerializer

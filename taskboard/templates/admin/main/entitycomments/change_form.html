@@ -1,0 +1,83 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+{% block field_sets %}
+{% load split_tag %}
+{% for fieldset in adminform %}
+  {% include "admin/main/fieldset.html" with all_errors=all_errors custom_fields_list_comments="passports,countries,keywords"|split:","  %}
+{% endfor %}
+<br/><br/>
+
+
+<script>
+  window.addEventListener('load', function () {
+      var node = document.getElementById("pass_errors");
+      var submit_row = document.getElementsByClassName("submit-row");
+      //document.getElementById("entitycomments_form").insertBefore(node,submit_row[0]);
+    });
+
+  function add(id,number){
+    var fullname = id+"_ul_"+number;
+    var counter = document.getElementById(fullname+"_counter");
+    var parent = document.getElementById(fullname);
+    var li_list = parent.getElementsByTagName("li");
+    var li = document.createElement("li");
+    if (li_list.length == 0){
+      var new_id = fullname+"_li_"+1;
+    }
+    else{
+      var old_id = li_list[li_list.length-1].id.split("_")
+      var new_id_number = parseInt(old_id[old_id.length-1])+1;
+      var new_id = fullname+"_li_"+new_id_number;
+    }
+    li.setAttribute("id",new_id)
+    var btn = document.getElementById("button_"+fullname);
+    console.log(btn);
+    var keys = {
+        "passports":["person","pass_code","citizenship","country"],
+        "countries":["country"],
+        "keywords":["keyword"]
+      };
+    var selects = parent.getElementsByTagName("select")
+    var selects_keys = [];
+    for (i=0;i<selects.length;i++){
+      selects_keys.push(selects[i].value);
+    }
+    var x = document.createElement("select");
+    x.required=true;
+    x.name = "external_sources_"+id;
+    x.style.width = "99px"
+    for (i=0;i<keys[id].length;i++){
+      console.log(keys[id][i])
+      if (!selects_keys.includes(keys[id][i])){
+        var option = document.createElement("option");
+        option.value = keys[id][i];
+        option.text = keys[id][i];
+        x.appendChild(option);
+      }
+    }
+    parent.insertBefore(li,btn);
+    li.appendChild(x);
+    li.innerHTML += `<input type="text" name="extra_field_${id}" id="extra_field_${id}" required style="width:165px">
+                    <img id="button_delete_${new_id}" src="/static/admin/img/icon-deletelink.svg" 
+                    alt="Удалить" onclick=remove("${fullname}","${new_id}") style="cursor: pointer;">`
+    
+    counter.value = parseInt(counter.value)+1;
+  };
+  function remove(parent,id){
+    var node = document.getElementById(parent);
+    var li = document.getElementById(id);
+    var counter = document.getElementById(parent+"_counter");
+    node.removeChild(li);
+    counter.value = parseInt(counter.value)-1;
+  }
+  function windowpop(url, width, height) {
+    var leftPosition, topPosition;
+    var new_url = url.replace("passports", "passport");
+    leftPosition = (window.screen.width / 2) - ((width / 2) + 10);
+    topPosition = (window.screen.height / 2) - ((height / 2) + 50);
+    window.open(new_url, 
+      "Window2",
+      "status=no,height=" + height + ",width=" + width + ",resizable=yes,left=" + leftPosition + ",top=" + topPosition + ",screenX=" + leftPosition + ",screenY=" + topPosition + ",toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
+}
+</script>
+{% endblock %}

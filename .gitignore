@@ -1,0 +1,6 @@
+taskboard/static
+taskboard/media
+taskboard/dump.sql
+taskboard/taskboard/config.py
+taskboard/authentification/migrations
+taskboard/main/migrations

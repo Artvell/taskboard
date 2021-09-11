@@ -1,0 +1,30 @@
+
+  <table style="width:55%;" id="{{model}}_errors">
+  <tr>
+    <th></th>
+    <th></th>
+  </tr>
+  {% for error in errors %}
+    <tr>
+        <input type="hidden" id="{{model}}_id" name="{{model}}_id" value="{{error.id}}">
+        <td><a onclick="return windowpop('../../../{{model}}/{{error.id}}/',545, 433)" style="color:#00bfff;cursor: pointer;">
+        {{model|title}} №{{error.id}}</a></td>
+        <td>
+          <ul id = "{{model}}_ul_{{forloop.counter}}">
+            {% for key,value in error.items %}
+              {% if key != "id" %}
+              <li id="{{model}}_ul_{{forloop.parentloop.counter}}_li_{{ forloop.counter }}">
+                <select name="external_sources_{{model}}" required style="width:99px"><option selected="selected">{{key}}<option></select>
+                <input type="text" name="extra_field_{{model}}" id="extra_field_{{model}}" value="{{value}}" required style="width:160px">
+                <img id="button_delete_{{forloop.counter}}" src="/static/admin/img/icon-deletelink.svg" alt="Удалить" onclick=remove("{{model}}_ul_{{forloop.parentloop.counter}}","{{model}}_ul_{{forloop.parentloop.counter}}_li_{{forloop.counter}}") style="cursor: pointer;">
+              </li>
+              {% endif %}
+            {% endfor %}
+            <img id="button_{{model}}_ul_{{forloop.counter}}" src="/static/admin/img/icon-addlink.svg" alt="Добавить" onclick=add('{{model}}',{{forloop.counter}}) style="cursor: pointer;">
+          </ul>
+          <input type="hidden" id="{{model}}_ul_{{forloop.counter}}_counter" name="{{model}}_counters" value={{error|length}}>
+        </td>
+    </tr>
+  {% endfor %}
+</table>
+<!--<textarea name="extra_field_{{model}}" id="extra_field_{{model}}" cols="45" rows="10">{{error.errors}}</textarea>-->

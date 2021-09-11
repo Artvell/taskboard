@@ -1,0 +1,17 @@
+
+<ul id = "{{model}}">
+    {% if flag %}
+        <li id="{{model}}_0">
+            <input type="text" name="extra_field_{{model}}" id="extra_field_{{model}}">
+            <img id="button_delete_{{model}}_0" src="/static/admin/img/icon-deletelink.svg" alt="Удалить" onclick=remove("{{model}}","{{model}}_0") style="cursor: pointer;">
+        </li>
+    {% endif %}
+    {% for info in data %}
+        <li id="{{model}}_{{ forloop.counter }}">
+            <input type="text" name="extra_field_{{model}}" id="extra_field_{{model}}" value={{info}}>
+            <img id="button_delete_{{forloop.counter}}" src="/static/admin/img/icon-deletelink.svg" alt="Удалить" onclick=remove("{{model}}","{{model}}_{{forloop.counter}}") style="cursor: pointer;">
+        </li>
+      {% endfor %}
+    <img id="button_{{model}}" src="/static/admin/img/icon-addlink.svg" alt="Добавить" onclick=add("{{model}}") style="cursor: pointer;">
+</ul>
+

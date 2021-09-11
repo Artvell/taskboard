@@ -1,0 +1,45 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+{% load split_tag %}
+{% block field_sets %}
+{% for fieldset in adminform %}
+  {% include "admin/main/fieldset.html" with all_data=all_data custom_fields_list="aliases,low_quality_aliases,alternative_spelling"|split:","  %}
+{% endfor %}
+
+<script>
+  function add(id){
+    var parent = document.getElementById(id);
+    var li_list = parent.getElementsByTagName("li");
+    var li = document.createElement("li");
+    var new_id_number;
+    if (li_list.length == 0){
+      new_id_number = 0;
+    }
+    else{
+      var old_id = li_list[li_list.length-1].id.split("_")
+      new_id_number = parseInt(old_id[old_id.length-1])+1;
+    }
+    var new_id = id+"_"+new_id_number;
+    li.setAttribute("id",new_id)
+    var btn = document.getElementById("button_"+id);
+    li.innerHTML = `<input type="text" name="extra_field_${id}" id="extra_field_${id}">
+                    <img id="button_delete_${new_id}" src="/static/admin/img/icon-deletelink.svg" 
+                    alt="Удалить" onclick=remove("${id}","${new_id}") style="cursor: pointer;">`
+    parent.insertBefore(li,btn);
+  };
+  function remove(parent,id){
+    var node = document.getElementById(parent);
+    var li = document.getElementById(id);
+    node.removeChild(li);
+  }
+  function httpGet(url)
+  {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", url, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+  }
+</script>
+{% endblock %}
+
+<!---->
